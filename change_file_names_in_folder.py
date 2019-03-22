@@ -12,7 +12,7 @@ def get_digit_count(number):
     count = 0
     while number > 0:
         number = number // 10
-        count = count + 1
+        count += 1
     return count
 
 
