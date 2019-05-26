@@ -2,10 +2,22 @@
 import os
 import sys
 from pathlib import Path
+import re
+import unicodedata
 
 
 def get_count_files_in_folder():
     return len([name for name in os.listdir('.') if os.path.isfile(name)])
+
+def slugify(value):
+    """
+    Normalizes string, converts to lowercase, removes non-alpha characters,
+    and converts spaces to hyphens.
+    """
+    value = value.replace(u'\u0131', 'i')
+    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
+    value = re.sub(r'[^\w\s-]', '', value).strip().lower()
+    return re.sub(r'[-\s]+', '-', value)    
 
 
 def get_digit_count(number):
@@ -28,7 +40,7 @@ def get_list_files_in_folder():
 
 
 RENM_PATH = os.getcwd()
-BASE_NAME = os.path.basename(RENM_PATH)
+BASE_NAME = slugify(os.path.basename(RENM_PATH))
 BASE_FCNT = get_count_files_in_folder()
 FMT = get_digit_count(BASE_FCNT)
 
