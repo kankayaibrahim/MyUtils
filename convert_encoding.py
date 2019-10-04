@@ -27,20 +27,27 @@ def change_encoding_file(inp_fname: str, outp_fname: str, src_enc: str, des_enc:
 
 
 def main():
-    src_folder = r'C:\temp\train\1254_DATA'
-    dst_folder = r'C:\temp\train\out2'
+    src_folder = r'D:\YSA\2019-10-01-train-nlp\Train'
+    dst_folder = r'D:\YSA\2019-10-01-train-nlp\Train-utf8'
     tmp_cnt = get_count_files_in_folder(src_folder)
     cnt = 0
     if not os.path.exists(dst_folder):
         os.makedirs(dst_folder)
     mylist = get_list_files_in_folder(src_folder)
+    err_list = []
     for ls in mylist:
         inp = src_folder+os.sep+ls
         out = dst_folder+os.sep+ls
-        change_encoding_file(inp, out, 'cp1254', 'utf8')
+        try:
+            change_encoding_file(inp, out, 'cp1254', 'utf8')
+        except Exception as e:
+            err_list.append(str(inp)+' '+str(e))
         cnt += 1
         print('\rEncodinc devam ediyor : '+str(cnt)+' / '+str(tmp_cnt) +' işlemdeki dosya: '+inp, end='', flush=True)
     print('\nİşlem tamamlandı kontrol ediniz.')            
+    if len(err_list) > 0:
+        for er in err_list:
+            print(er)
 
 
 if __name__ == "__main__":
